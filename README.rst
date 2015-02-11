@@ -110,3 +110,35 @@ if is not CRITICAL.
 The methods **debug?**, **info?**, **warn?**, **error?** and **fatal?**
 can be used to query whether a given level is to be logged in the plugin's
 long output.
+
+Nagios Methods
+--------------
+
+status
+~~~~~~
+
+The numeric Nagios plugin status (assignable).
+
+summary
+~~~~~~~
+
+The current summary line (assignable).
+
+add_perfdata
+~~~~~~~~~~~~
+
+Add a perfdata item::
+
+  add_perfdata(label, value, opts={})
+
+Add a labeled perfdata item. Optional tags include:
+
+:unit: The unit of the value
+:warning: The warning level of the value
+:critical: The critical level of the value
+:minimum: The minimum possible value
+:maximum: The maximum possible value
+
+Performance data is given in `nagios plugins`_ format.
+
+.. _`nagios plugins`: https://nagios-plugins.org/doc/guidelines.html#AEN200
