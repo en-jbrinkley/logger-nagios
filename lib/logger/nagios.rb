@@ -74,6 +74,7 @@ class Logger::Nagios
         @opt = opt
         @service = service || File.basename($0)
         @messages = []
+        @perfdata = []
         @summary = nil
         @level = INFO
         @status = UNKNOWN
@@ -166,10 +167,30 @@ class Logger::Nagios
         if @summary
             o << " - #{@summary}"
         end
+        unless @perfdata.empty?
+            o << "|" + perfdata
+        end
         unless @messages.empty?
             o << "\n" + @messages.join("\n")
         end
         o
     end
 
+    def add_perfdata(label, value, opt={})
+        if /[\s=\']/.match label
+            label.gsub!(/\'/, %q{\\'})
+            label = %q{'} + label + %q{'}
+        end
+        post = [:warn, :crit, :min, :max].map { |i| opt[i] }
+        while !post.empty? and post[-1].nil?
+            post.pop
+        end
+        item = label + '=' + value.to_s + (opt[:unit] || '') + (post.empty? ? '' : ';' + post.join(';'))
+        @perfdata << item
+        item
+    end
+
+    def perfdata
+        @perfdata.join(' ')
+    end
 end

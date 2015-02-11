@@ -16,8 +16,12 @@ of Nagios-isms.
 
 The exit status of your plugin will be set by Logger::Nagios
 using the **Kernel#at_exit** call. You don't need to do anything
-special. The status will always be the "worst" of any Logger::Nagios
+special. The status (and output) will always be the "worst" of any Logger::Nagios
 objects created.
+
+If your plugin exits unexpectedly due to an exception, the first
+plugin's output will be used and the exit code will be set to
+UNKNOWN.
 
 Logger Methods
 --------------
@@ -129,22 +133,26 @@ add_perfdata
 
 Add a perfdata item::
 
-  add_perfdata(label, value, opts={})
+  add_perfdata(label, value, tags={})
 
 Add a labeled perfdata item. Optional tags include:
 
-
 :unit: The unit of the value
-:warning: The warning level of the value
-:critical: The critical level of the value
-:minimum: The minimum possible value
-:maximum: The maximum possible value
+:warn: The warning level of the value
+:crit: The critical level of the value
+:min: The minimum possible value
+:max: The maximum possible value
 
 Performance data is given in `nagios plugins`_ format.
+
+perfdata
+~~~~~~~~
+
+Return just the perfdata portion of output.
 
 output
 ~~~~~~
 
-Show plugin output.
+Return plugin output (this happens automatically upon exit).
 
 .. _`nagios plugins`: https://nagios-plugins.org/doc/guidelines.html#AEN200
