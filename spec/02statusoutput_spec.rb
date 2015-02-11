@@ -3,6 +3,7 @@
 describe Logger::Nagios do
 
     before(:each) { @logger = Logger::Nagios.new('utest') }
+    after(:each) { @logger.discard }
 
     context "when updating status" do
 

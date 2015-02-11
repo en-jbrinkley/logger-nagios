@@ -10,6 +10,7 @@ describe Logger::Nagios do
 
             logger = Logger::Nagios.new
             expect(logger).to be_a Logger::Nagios
+            logger.discard
 
         end
     end

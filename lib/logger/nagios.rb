@@ -22,6 +22,35 @@ class Logger::Nagios
 
     @@plugins = []
 
+    at_exit do
+        plugin = @@plugins.sort { |a, b| a.status <=> b.status }.first
+        if plugin
+            if $!.nil? or ($!.is_a?(SystemExit) and $!.success?)
+                # We're exiting 'normally', so we go through
+                # our plugins and exit as the failest one
+                # TODO fix sort logic for UNKNOWN
+                puts plugin.output
+                Process.exit(plugin.status)
+            else
+                # We're exiting as a result of something else,
+                # probably a fatal exception. We have to
+                # exit with UNKNOWN here, and choose the first
+                # plugin to be the output
+                if $!.respond_to? :backtrace
+                    $!.backtrace.each { |line| plugin.error line }
+                end
+
+                if $!.respond_to? :message
+                    plugin.summary = "#{$0} exiting: #{$!.message}"
+                end
+
+                plugin.status = 3
+                puts plugin.output
+                Process.exit(plugin.status)
+            end
+        end
+    end
+
     def status_of(severity)
         case severity
         when INFO
@@ -50,6 +79,12 @@ class Logger::Nagios
         @status = UNKNOWN
         # Don't really do anything with this flag
         @closed = false
+
+        @@plugins << self # thread safe?
+    end
+
+    def discard
+        @@plugins.delete self
     end
 
     def set_status(severity)
