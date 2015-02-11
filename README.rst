@@ -133,6 +133,7 @@ Add a perfdata item::
 
 Add a labeled perfdata item. Optional tags include:
 
+
 :unit: The unit of the value
 :warning: The warning level of the value
 :critical: The critical level of the value
@@ -140,5 +141,10 @@ Add a labeled perfdata item. Optional tags include:
 :maximum: The maximum possible value
 
 Performance data is given in `nagios plugins`_ format.
+
+output
+~~~~~~
+
+Show plugin output.
 
 .. _`nagios plugins`: https://nagios-plugins.org/doc/guidelines.html#AEN200
