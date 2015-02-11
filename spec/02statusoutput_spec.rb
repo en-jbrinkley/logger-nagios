@@ -122,4 +122,17 @@ describe Logger::Nagios do
 
     end
 
+    context "when testing logging" do
+
+        it "answers correctly regarding log level" do
+            expect(@logger.level).to eq Logger::Nagios::INFO
+            @logger.level = Logger::Nagios::WARN
+            expect(@logger.debug?).to be_falsey
+            expect(@logger.info?).to be_falsey
+            expect(@logger.warn?).to be_truthy
+            expect(@logger.error?).to be_truthy
+            expect(@logger.fatal?).to be_truthy
+        end
+    end
+
 end

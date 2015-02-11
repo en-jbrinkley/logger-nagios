@@ -141,6 +141,26 @@ class Logger::Nagios
         @closed = true
     end
 
+    def debug?
+        @level <= DEBUG
+    end
+
+    def info?
+        @level <= INFO
+    end
+
+    def warn?
+        @level <= WARN
+    end
+
+    def error?
+        @level <= ERROR
+    end
+
+    def fatal?
+        @level <= FATAL
+    end
+
     def output
         o = "#{@service} #{string_status(@status)}"
         if @summary
