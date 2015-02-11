@@ -110,4 +110,15 @@ describe Logger::Nagios do
 
     end
 
+    context "when closing" do
+
+        it "sets summary" do
+            @logger.info "test info message"
+            @logger.close "run completed"
+            expect(@logger.status).to eq 0
+            expect(@logger.output).to eq "utest OK - run completed\ntest info message"
+        end
+
+    end
+
 end

@@ -48,6 +48,8 @@ class Logger::Nagios
         @summary = nil
         @level = INFO
         @status = UNKNOWN
+        # Don't really do anything with this flag
+        @closed = false
     end
 
     def set_status(severity)
@@ -95,6 +97,13 @@ class Logger::Nagios
 
     def fatal(m, dummy=nil)
         log(FATAL, m)
+    end
+
+    def close(summary=nil)
+        if summary
+            @summary = summary
+        end
+        @closed = true
     end
 
     def output
