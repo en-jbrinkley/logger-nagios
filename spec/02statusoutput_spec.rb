@@ -105,7 +105,7 @@ describe Logger::Nagios do
             @logger.info "test info message"
             @logger.summary = "test summary"
             expect(@logger.status).to eq 0
-            expect(@logger.output).to eq "utest OK - test summary\ntest warn message"
+            expect(@logger.output).to eq "utest OK - test summary\ntest info message"
         end
 
     end
